@@ -11,6 +11,9 @@
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
     "axios": "^0.19.2",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-json-view": "^1.19.1",
@@ -37,5 +40,21 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "husky": {
+      "hooks": {
+        "pre-commit": "lint-staged"
+      }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
   }
 }
