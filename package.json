@@ -18,6 +18,7 @@
     "react-dom": "^16.13.1",
     "react-json-view": "^1.19.1",
     "react-scripts": "3.4.1",
+    "styled-components": "^5.1.1",
     "typescript": "^3.7.5"
   },
   "scripts": {
@@ -42,9 +43,9 @@
     ]
   },
   "husky": {
-      "hooks": {
-        "pre-commit": "lint-staged"
-      }
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
@@ -54,7 +55,9 @@
   "prettier": {
     "trailingComma": "es5",
     "tabWidth": 2,
-    "semi": false,
     "singleQuote": true
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.0"
   }
 }
