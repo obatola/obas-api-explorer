@@ -1,6 +1,6 @@
 const colors = {
   green: '#2ecc71',
-  white: '#fff',
+  white: '#FFF',
 };
 
 const buttonColors = {
@@ -10,4 +10,5 @@ const buttonColors = {
 
 export const colorConstant = {
   button: buttonColors,
+  colors,
 };

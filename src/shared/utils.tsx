@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react';
+import React, { ReactNode } from 'react';
 
-export const generateSelectOptions = (options: string[]): ReactElement[] =>
+export const generateSelectOptions = (options: string[]): ReactNode[] =>
   options.map((str, index) => <option key={index}>{str}</option>);
 
 export const isPostMethod = (method: string) => {

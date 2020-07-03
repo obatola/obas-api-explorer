@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { timesBasePx } from '../../shared/mixins';
+import { colorConstant } from '../../shared/colorConstants';
 
 export const ExplorerWrapper = styled.div`
   max-width: 500px;
@@ -30,4 +31,9 @@ export const Label = styled.div`
 
 export const LabelContentWrapper = styled.div`
   margin-bottom: ${timesBasePx(1)};
+`;
+
+export const ReactJsoWrapper = styled.div`
+  background-color: ${colorConstant.colors.white};
+  padding: ${timesBasePx(1 / 2)} ${timesBasePx(1)};
 `;

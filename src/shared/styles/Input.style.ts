@@ -22,3 +22,13 @@ export const Button = styled.button`
   line-height: 1;
   padding: ${timesBasePx(1 / 2)};
 `;
+
+export const TextArea = styled.textarea`
+  max-width: 100%;
+  min-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: ${defaultFontSize};
+  padding: ${timesBasePx(1 / 2)} ${timesBasePx(1)};
+  background-color: ${colorConstant.colors.white};
+`;

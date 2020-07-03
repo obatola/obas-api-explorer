@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import axios, { AxiosError, AxiosResponse, Method } from 'axios';
 import ReactJson from 'react-json-view';
 import styled from 'styled-components';
@@ -11,7 +11,7 @@ const InputWrappers = styled.div`
   margin-bottom: 20px;
 `;
 
-function RestConsole(): ReactElement {
+function RestConsole(): ReactNode {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<object | null>();
   const [message, setMessage] = useState<string | null>();
@@ -103,7 +103,6 @@ function RestConsole(): ReactElement {
         <ConditionalRender displayChildren={!!response}>
           <div>
             <ReactJson name={false} collapsed={2} src={response || {}} />
-            <textarea rows={4} value={JSON.stringify(response)} disabled />
           </div>
         </ConditionalRender>
         <ConditionalRender displayChildren={!!message}>

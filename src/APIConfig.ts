@@ -1,3 +1,5 @@
+import { Method } from 'axios';
+
 export interface BodySpec {
   name: string;
   type: // | 'hidden'
@@ -25,7 +27,7 @@ export interface BodySpec {
 export interface APIConfigType {
   title: string;
   url: string;
-  method: string;
+  method: Method;
   body: BodySpec[];
 }
 
