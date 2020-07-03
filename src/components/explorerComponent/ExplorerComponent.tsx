@@ -1,5 +1,6 @@
-import React, { FormEvent, ReactElement, useState } from 'react';
+import React, { FormEvent, ReactElement, useState, Fragment } from 'react';
 import {
+  ExplorerComponentWrapper,
   Label,
   LabelContentWrapper,
   SectionHeader,
@@ -10,7 +11,7 @@ import { APIConfigType } from '../../APIConfig';
 import BodyParam from './BodyParam';
 import { Button } from '../../shared/styles/Input.style';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { isPostMethod } from '../../shared/utils';
+import { isMethodWithBody } from '../../shared/utils';
 import { contentTypeMap } from '../restConsole/constants';
 import Response from './Response';
 
@@ -25,12 +26,16 @@ function ExplorerComponent({
   body,
 }: APIConfigType): ReactElement {
   const [requestBody, setRequestBody] = useState<RequestBodyType>({});
+  const [axiosResponse, setAxiosResponse] = useState<AxiosResponse | null>();
   const [response, setResponse] = useState<object | null>();
+  const [axiosError, setAxiosError] = useState<object | null>();
   const [message, setMessage] = useState<string | null>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const resetResponse = () => {
     setResponse(null);
+    setAxiosResponse(null);
+    setAxiosError(null);
     setMessage(null);
   };
 
@@ -51,26 +56,12 @@ function ExplorerComponent({
     setIsLoading(false);
 
     handleResponse(response.data);
+    setAxiosResponse(response);
   };
 
   const handleFailedAPIRequest = (error: AxiosError<any>) => {
     setIsLoading(false);
-
-    if (error.response) {
-      handleResponse(error.response);
-    } else if (error.request) {
-      console.log(
-        'Error | The request was made but no response was received. ',
-        error.request
-      );
-      handleResponse(error.request);
-    } else {
-      console.log(
-        'Error | Something happened in setting up the request that triggered an Error. ',
-        error.message
-      );
-      handleResponse(error.message);
-    }
+    setAxiosError(error.toJSON());
   };
 
   const sendAPI = (requestConfig: AxiosRequestConfig) => {
@@ -80,7 +71,7 @@ function ExplorerComponent({
   };
 
   const generateRequestConfig = (): AxiosRequestConfig => {
-    if (isPostMethod(method)) {
+    if (isMethodWithBody(method)) {
       return {
         method,
         url,
@@ -112,19 +103,25 @@ function ExplorerComponent({
     });
   };
 
-  const renderBodyParams = () => {
-    const bodyParamDivs = body.map((bodyConfig) => (
-      <BodyParam onChange={handleBodyParamChange} {...bodyConfig} />
+  const renderBodySection = () => {
+    if (!body) return <Fragment />;
+
+    const bodyParamDivs = body.map((bodyConfig, index) => (
+      <BodyParam onChange={handleBodyParamChange} {...bodyConfig} key={index} />
     ));
 
-    return <>{bodyParamDivs}</>;
+    return (
+      <>
+        <SectionHeader>Body</SectionHeader>
+        {bodyParamDivs}
+      </>
+    );
   };
 
   return (
-    <div>
+    <ExplorerComponentWrapper>
       <Title>{title}</Title>
       <SectionWrapper>
-        <SectionHeader>API</SectionHeader>
         <LabelContentWrapper>
           <Label>Base URL</Label>
           <div>{url}</div>
@@ -136,15 +133,20 @@ function ExplorerComponent({
       </SectionWrapper>
       <form onSubmit={handleSubmit}>
         <SectionWrapper>
-          <SectionHeader>Body</SectionHeader>
-          {renderBodyParams()}
+          {renderBodySection()}
           <Button>Send Request</Button>
         </SectionWrapper>
       </form>
       <SectionWrapper>
-        <Response isLoading={isLoading} response={response} message={message} />
+        <Response
+          isLoading={isLoading}
+          response={response}
+          message={message}
+          axiosResponse={axiosResponse}
+          axiosError={axiosError}
+        />
       </SectionWrapper>
-    </div>
+    </ExplorerComponentWrapper>
   );
 }
 

@@ -1,6 +1,7 @@
 const colors = {
   green: '#2ecc71',
   white: '#FFF',
+  lightRed: '#ffdedb',
 };
 
 const buttonColors = {

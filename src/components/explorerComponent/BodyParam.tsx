@@ -14,6 +14,8 @@ interface InputProps {
   type: string;
   pattern?: string;
   required?: boolean;
+  min?: number;
+  max?: number;
 }
 
 function BodyParam({
@@ -25,6 +27,8 @@ function BodyParam({
   required,
   pattern,
   onChange,
+  rangeMin,
+  rangeMax,
 }: BodyParamProps) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(name, event.target.value);
@@ -37,6 +41,8 @@ function BodyParam({
     placeholder,
     required,
     pattern,
+    min: rangeMin,
+    max: rangeMax,
   };
 
   return (

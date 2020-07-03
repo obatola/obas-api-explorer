@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosResponse, Method } from 'axios';
 import ReactJson from 'react-json-view';
 import styled from 'styled-components';
 
-import { generateSelectOptions, isPostMethod } from '../../shared/utils';
+import { generateSelectOptions, isMethodWithBody } from '../../shared/utils';
 import { apiMethods, contentTypeMap } from './constants';
 import ConditionalRender from '../conditionalRender/ConditionalRender';
 
@@ -72,7 +72,7 @@ function RestConsole(): ReactNode {
     setIsLoading(true);
     resetResponse();
 
-    if (isPostMethod(requestMethod)) {
+    if (isMethodWithBody(requestMethod)) {
       requestConfig = {
         method: requestMethod,
         url: requestURL,
