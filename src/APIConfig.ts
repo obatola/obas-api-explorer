@@ -1,26 +1,23 @@
 export interface BodySpec {
   name: string;
-  type: // | 'button'
+  type: // | 'hidden'
   // | 'checkbox'
-  // | 'color'
-  // | 'date'
-  // | 'datetime'
+  // | 'radio'
   // | 'file'
-  // | 'hidden'
   // | 'image'
   // | 'month'
   // | 'password'
-  // | 'radio'
+  // | 'datetime'
   // | 'range'
-  // | 'reset'
+  // | 'date'
   // | 'search'
-  // | 'submit'
   // | 'week'
   // | 'url'
+  // | 'color'
   'email' | 'number' | 'tel' | 'text' | 'time';
   maxlength?: number;
   minlength?: number;
-  placeholder?: string | number;
+  placeholder?: string;
   required?: boolean;
   pattern?: string;
 }
@@ -54,6 +51,7 @@ export const apiConfigs: APIConfigType[] = [
         name: 'phone',
         type: 'tel',
         pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+        placeholder: '555-555-5555',
       },
     ],
   },

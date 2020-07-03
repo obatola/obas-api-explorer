@@ -7,6 +7,15 @@ interface BodyParamProps extends BodySpec {
   onChange: (key: string, value: string | number) => void;
 }
 
+interface InputProps {
+  maxLength?: number;
+  minLength?: number;
+  placeholder?: string;
+  type: string;
+  pattern?: string;
+  required?: boolean;
+}
+
 function BodyParam({
   name,
   type,
@@ -21,10 +30,19 @@ function BodyParam({
     onChange(name, event.target.value);
   };
 
+  let inputProps: InputProps = {
+    type,
+    maxLength: maxlength,
+    minLength: minlength,
+    placeholder,
+    required,
+    pattern,
+  };
+
   return (
     <LabelContentWrapper>
       <Label>{name}</Label>
-      <Input onChange={handleChange} type={type} />
+      <Input onChange={handleChange} {...inputProps} />
     </LabelContentWrapper>
   );
 }

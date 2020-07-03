@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { FormEvent, ReactElement, useState } from 'react';
 import {
   Label,
   LabelContentWrapper,
@@ -37,7 +37,9 @@ function ExplorerComponent({
     return <>{bodyParamDivs}</>;
   };
 
-  const sendRequest = () => {
+  const sendRequest = (event: FormEvent) => {
+    event.preventDefault();
+
     console.log('send request', { url, method, requestBody });
   };
 
@@ -55,11 +57,13 @@ function ExplorerComponent({
           <div>{method}</div>
         </LabelContentWrapper>
       </SectionWrapper>
-      <SectionWrapper>
-        <SectionHeader>Body</SectionHeader>
-        {renderBodyParams()}
-        <Button onClick={sendRequest}>Send Request</Button>
-      </SectionWrapper>
+      <form onSubmit={sendRequest}>
+        <SectionWrapper>
+          <SectionHeader>Body</SectionHeader>
+          {renderBodyParams()}
+          <Button>Send Request</Button>
+        </SectionWrapper>
+      </form>
       <SectionWrapper>
         <SectionHeader>Response</SectionHeader>
       </SectionWrapper>
