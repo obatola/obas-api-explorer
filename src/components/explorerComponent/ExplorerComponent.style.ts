@@ -3,7 +3,8 @@ import { timesBasePx } from '../../shared/mixins';
 import { colorConstant } from '../../shared/colorConstants';
 
 export const ExplorerWrapper = styled.div`
-  max-width: 500px;
+  max-width: 720px;
+  padding: ${timesBasePx(1)};
   margin: auto;
   margin-top: ${timesBasePx(4)};
 
@@ -57,6 +58,12 @@ export function isErrorInput({ error }: IsErrorProp) {
 
 export const ReactJsoWrapper = styled.div<IsErrorProp>`
   ${isErrorInput}
-  color: ${({ error }) => (error ? colorConstant.colors.white : 'black')};
+  color: ${({ error }) =>
+    error ? colorConstant.colors.white : colorConstant.colors.black};
   padding: ${timesBasePx(1 / 2)} ${timesBasePx(1)};
+`;
+
+export const Divider = styled.div`
+  width: 100%;
+  border-bottom: 1px solid ${colorConstant.colors.lightGrey};
 `;

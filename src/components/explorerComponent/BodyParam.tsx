@@ -48,7 +48,7 @@ function BodyParam({
   return (
     <LabelContentWrapper>
       <Label>{name}</Label>
-      <Input onChange={handleChange} {...inputProps} />
+      <Input fullWidth onChange={handleChange} {...inputProps} />
     </LabelContentWrapper>
   );
 }

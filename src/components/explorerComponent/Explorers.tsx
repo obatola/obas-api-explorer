@@ -1,7 +1,8 @@
 import React, { ReactElement } from 'react';
 import { APIConfigType } from '../../APIConfig';
 import ExplorerComponent from './ExplorerComponent';
-import { ExplorerWrapper } from './ExplorerComponent.style';
+import RestConsole from '../restConsole/RestConsole';
+import { Divider, ExplorerWrapper } from './ExplorerComponent.style';
 
 interface ExplorersProps {
   config: APIConfigType[];
@@ -12,7 +13,13 @@ function Explorers({ config }: ExplorersProps): ReactElement {
     <ExplorerComponent {...explorerConfig} key={index} />
   ));
 
-  return <ExplorerWrapper>{explorerDivs}</ExplorerWrapper>;
+  return (
+    <ExplorerWrapper>
+      {explorerDivs}
+      <Divider />
+      <RestConsole />
+    </ExplorerWrapper>
+  );
 }
 
 export default Explorers;

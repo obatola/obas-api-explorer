@@ -1,13 +1,13 @@
 export const apiMethods = [
-  'get',
-  'delete',
-  'post',
-  'put',
-  // 'head',
-  // 'options',
-  // 'patch',
-  // 'link',
-  // 'unlink',
+  'GET',
+  'DELETE',
+  'POST',
+  'PUT',
+  // 'HEAD',
+  // 'OPTIONS',
+  // 'PATCH',
+  // 'LINK',
+  // 'UNLINK',
 ];
 
 interface ContentTypeMapType {
