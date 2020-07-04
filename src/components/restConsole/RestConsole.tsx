@@ -1,11 +1,5 @@
-import React, { ReactElement, useState } from 'react';
-import axios, {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse,
-  Method,
-} from 'axios';
-import styled from 'styled-components';
+import React, { ChangeEvent, ReactElement, useState } from 'react';
+import { AxiosRequestConfig, Method } from 'axios';
 
 import { generateSelectOptions, isMethodWithBody } from '../../shared/utils';
 import { apiMethods, contentTypeMap } from './constants';
@@ -23,65 +17,25 @@ import {
   Title,
 } from '../explorerComponent/ExplorerComponent.style';
 import { Card } from '../../shared/styles/Card.style';
-
-const InputWrappers = styled.div`
-  margin-bottom: 20px;
-`;
+import useRestAPISystem from '../../shared/hooks/UseRestAPISystem';
 
 function RestConsole(): ReactElement {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [response, setResponse] = useState<object | null>();
-  const [message, setMessage] = useState<string | null>();
+  const {
+    isLoading,
+    responseJSON,
+    responseString,
+    axiosResponse,
+    axiosError,
+    sendAPI,
+  } = useRestAPISystem();
   const [requestMethod, setRequestMethod] = useState<Method>('get');
   const [requestBody, setRequestBody] = useState<string | undefined>();
   const [requestBodyType, setRequestBodyType] = useState<string>('text');
-  const [axiosResponse, setAxiosResponse] = useState<AxiosResponse | null>();
-  const [axiosError, setAxiosError] = useState<object | null>();
   const [requestURL, setRequestURL] = useState<string>(
     'https://my-json-server.typicode.com/typicode/demo/posts'
   );
 
-  const resetResponse = () => {
-    setResponse(null);
-    setAxiosResponse(null);
-    setAxiosError(null);
-    setMessage(null);
-  };
-
-  const handleResponse = (value: any) => {
-    if (typeof value === 'object') {
-      try {
-        JSON.parse(JSON.stringify(value));
-        setResponse(value);
-      } catch (e) {
-        setMessage(value.toString());
-      }
-    } else {
-      setMessage(value);
-    }
-  };
-
-  const handleSuccessfulAPIRequest = (response: AxiosResponse<any>) => {
-    setIsLoading(false);
-
-    handleResponse(response.data);
-    setAxiosResponse(response);
-  };
-
-  const handleFailedAPIRequest = (error: AxiosError<any>) => {
-    setIsLoading(false);
-    setAxiosError(error.toJSON());
-  };
-
-  const sendAPI = (requestConfig: AxiosRequestConfig) => {
-    axios(requestConfig)
-      .then(handleSuccessfulAPIRequest)
-      .catch(handleFailedAPIRequest);
-  };
-
   const handleSendAPI = () => {
-    setIsLoading(true);
-    resetResponse();
     sendAPI(generateRequestConfig());
   };
 
@@ -102,6 +56,12 @@ function RestConsole(): ReactElement {
     };
   };
 
+  const handleBodyTypeChange = (event: ChangeEvent<HTMLSelectElement>) =>
+    setRequestBodyType(event.target.value as string);
+
+  const handleRequestBodyChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
+    setRequestBody(event.target.value);
+
   const renderBody = () => {
     if (isMethodWithBody(requestMethod)) {
       return (
@@ -111,9 +71,7 @@ function RestConsole(): ReactElement {
             <Select
               fullWidth
               value={requestBodyType}
-              onChange={(event) =>
-                setRequestBodyType(event.target.value as Method)
-              }
+              onChange={handleBodyTypeChange}
             >
               {generateSelectOptions(Object.keys(contentTypeMap))}
             </Select>
@@ -124,13 +82,19 @@ function RestConsole(): ReactElement {
               fullWidth
               rows={4}
               value={requestBody}
-              onChange={(event) => setRequestBody(event.target.value)}
+              onChange={handleRequestBodyChange}
             />
           </LabelContentWrapper>
         </div>
       );
     }
   };
+
+  const handleURLChange = (event: ChangeEvent<HTMLInputElement>) =>
+    setRequestURL(event.target.value);
+
+  const handleMethodChange = (event: ChangeEvent<HTMLSelectElement>) =>
+    setRequestMethod(event.target.value as Method);
 
   return (
     <>
@@ -143,7 +107,7 @@ function RestConsole(): ReactElement {
               fullWidth
               type="text"
               value={requestURL}
-              onChange={(event) => setRequestURL(event.target.value)}
+              onChange={handleURLChange}
             />
           </LabelContentWrapper>
 
@@ -152,9 +116,7 @@ function RestConsole(): ReactElement {
             <Select
               fullWidth
               value={requestMethod}
-              onChange={(event) =>
-                setRequestMethod(event.target.value as Method)
-              }
+              onChange={handleMethodChange}
             >
               {generateSelectOptions(apiMethods)}
             </Select>
@@ -162,16 +124,16 @@ function RestConsole(): ReactElement {
 
           {renderBody()}
 
-          <InputWrappers>
+          <LabelContentWrapper>
             <Button onClick={handleSendAPI}>Send Request</Button>
-          </InputWrappers>
+          </LabelContentWrapper>
         </SectionWrapper>
 
         <SectionWrapper>
           <Response
             isLoading={isLoading}
-            response={response}
-            message={message}
+            responseJSON={responseJSON}
+            responseString={responseString}
             axiosResponse={axiosResponse}
             axiosError={axiosError}
           />
