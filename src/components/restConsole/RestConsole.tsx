@@ -17,7 +17,7 @@ import {
   Title,
 } from '../explorerComponent/ExplorerComponent.style';
 import { Card } from '../../shared/styles/Card.style';
-import useAxiosAPISender from '../../shared/hooks/UseAxiosAPISender';
+import useRestAPISystem from '../../shared/hooks/UseRestAPISystem';
 
 function RestConsole(): ReactElement {
   const {
@@ -27,7 +27,7 @@ function RestConsole(): ReactElement {
     axiosResponse,
     axiosError,
     sendAPI,
-  } = useAxiosAPISender();
+  } = useRestAPISystem();
   const [requestMethod, setRequestMethod] = useState<Method>('get');
   const [requestBody, setRequestBody] = useState<string | undefined>();
   const [requestBodyType, setRequestBodyType] = useState<string>('text');

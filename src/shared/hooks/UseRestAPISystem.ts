@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-interface UseAxiosAPISenderPackage {
+interface UseRestAPISystemHook {
   isLoading: boolean;
   responseJSON?: object;
   responseString?: string;
@@ -10,7 +10,7 @@ interface UseAxiosAPISenderPackage {
   sendAPI: (requestConfig: AxiosRequestConfig) => void;
 }
 
-function useAxiosAPISender(): UseAxiosAPISenderPackage {
+function useRestAPISystem(): UseRestAPISystemHook {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [responseJSON, setResponseJSON] = useState<object>();
   const [responseString, setResponseString] = useState<string>();
@@ -69,4 +69,4 @@ function useAxiosAPISender(): UseAxiosAPISenderPackage {
   };
 }
 
-export default useAxiosAPISender;
+export default useRestAPISystem;

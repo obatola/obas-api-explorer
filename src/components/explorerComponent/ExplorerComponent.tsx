@@ -14,11 +14,7 @@ import { isMethodWithBody } from '../../shared/utils';
 import { contentTypeMap } from '../restConsole/constants';
 import Response from './Response';
 import { Card } from '../../shared/styles/Card.style';
-import useAxiosAPISender from '../../shared/hooks/UseAxiosAPISender';
-
-interface RequestBodyType {
-  [key: string]: any;
-}
+import useRestAPISystem from '../../shared/hooks/UseRestAPISystem';
 
 function ExplorerComponent({
   title,
@@ -33,7 +29,7 @@ function ExplorerComponent({
     axiosResponse,
     axiosError,
     sendAPI,
-  } = useAxiosAPISender();
+  } = useRestAPISystem();
   const [requestBody, setRequestBody] = useState({});
 
   const handleSubmit = (event: FormEvent) => {
