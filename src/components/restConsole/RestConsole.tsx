@@ -33,10 +33,10 @@ function RestConsole(): ReactElement {
   const [responseJSON, setResponseJSON] = useState<object | null>();
   const [responseString, setResponseString] = useState<string | null>();
   const [requestMethod, setRequestMethod] = useState<Method>('get');
-  const [requestBody, setRequestBody] = useState<string | undefined>();
-  const [requestBodyType, setRequestBodyType] = useState<string>('text');
   const [axiosResponse, setAxiosResponse] = useState<AxiosResponse | null>();
   const [axiosError, setAxiosError] = useState<object | null>();
+  const [requestBody, setRequestBody] = useState<string | undefined>();
+  const [requestBodyType, setRequestBodyType] = useState<string>('text');
   const [requestURL, setRequestURL] = useState<string>(
     'https://my-json-server.typicode.com/typicode/demo/posts'
   );
