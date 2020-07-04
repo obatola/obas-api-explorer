@@ -1,11 +1,28 @@
 import React, { ReactElement, useState } from 'react';
-import axios, { AxiosError, AxiosResponse, Method } from 'axios';
-import ReactJson from 'react-json-view';
+import axios, {
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse,
+  Method,
+} from 'axios';
 import styled from 'styled-components';
 
-import { generateSelectOptions, isPostMethod } from '../../shared/utils';
+import { generateSelectOptions, isMethodWithBody } from '../../shared/utils';
 import { apiMethods, contentTypeMap } from './constants';
-import ConditionalRender from '../conditionalRender/ConditionalRender';
+import {
+  Button,
+  Input,
+  Select,
+  TextArea,
+} from '../../shared/styles/Input.style';
+import Response from '../explorerComponent/Response';
+import {
+  Label,
+  LabelContentWrapper,
+  SectionWrapper,
+  Title,
+} from '../explorerComponent/ExplorerComponent.style';
+import { Card } from '../../shared/styles/Card.style';
 
 const InputWrappers = styled.div`
   margin-bottom: 20px;
@@ -18,12 +35,16 @@ function RestConsole(): ReactElement {
   const [requestMethod, setRequestMethod] = useState<Method>('get');
   const [requestBody, setRequestBody] = useState<string | undefined>();
   const [requestBodyType, setRequestBodyType] = useState<string>('text');
+  const [axiosResponse, setAxiosResponse] = useState<AxiosResponse | null>();
+  const [axiosError, setAxiosError] = useState<object | null>();
   const [requestURL, setRequestURL] = useState<string>(
     'https://my-json-server.typicode.com/typicode/demo/posts'
   );
 
   const resetResponse = () => {
     setResponse(null);
+    setAxiosResponse(null);
+    setAxiosError(null);
     setMessage(null);
   };
 
@@ -44,36 +65,29 @@ function RestConsole(): ReactElement {
     setIsLoading(false);
 
     handleResponse(response.data);
+    setAxiosResponse(response);
   };
 
   const handleFailedAPIRequest = (error: AxiosError<any>) => {
     setIsLoading(false);
-
-    if (error.response) {
-      handleResponse(error.response);
-    } else if (error.request) {
-      console.log(
-        'Error | The request was made but no response was received. ',
-        error.request
-      );
-      handleResponse(error.request);
-    } else {
-      console.log(
-        'Error | Something happened in setting up the request that triggered an Error. ',
-        error.message
-      );
-      handleResponse(error.message);
-    }
+    setAxiosError(error.toJSON());
   };
 
-  const sendAPI = () => {
-    let requestConfig = {};
+  const sendAPI = (requestConfig: AxiosRequestConfig) => {
+    axios(requestConfig)
+      .then(handleSuccessfulAPIRequest)
+      .catch(handleFailedAPIRequest);
+  };
 
+  const handleSendAPI = () => {
     setIsLoading(true);
     resetResponse();
+    sendAPI(generateRequestConfig());
+  };
 
-    if (isPostMethod(requestMethod)) {
-      requestConfig = {
+  const generateRequestConfig = (): AxiosRequestConfig => {
+    if (isMethodWithBody(requestMethod)) {
+      return {
         method: requestMethod,
         url: requestURL,
         data: requestBody,
@@ -81,86 +95,89 @@ function RestConsole(): ReactElement {
           'Content-Type': contentTypeMap[requestBodyType],
         },
       };
-    } else {
-      requestConfig = {
-        method: requestMethod,
-        url: requestURL,
-      };
     }
-
-    axios(requestConfig)
-      .then(handleSuccessfulAPIRequest)
-      .catch(handleFailedAPIRequest);
+    return {
+      method: requestMethod,
+      url: requestURL,
+    };
   };
 
-  const renderResponseSection = () => {
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
-
-    return (
-      <InputWrappers>
-        <ConditionalRender displayChildren={!!response}>
-          <div>
-            <ReactJson name={false} collapsed={2} src={response || {}} />
-            <textarea rows={4} value={JSON.stringify(response)} disabled />
-          </div>
-        </ConditionalRender>
-        <ConditionalRender displayChildren={!!message}>
-          {message}
-        </ConditionalRender>
-      </InputWrappers>
-    );
-  };
-
-  const displayBody: boolean =
-    requestMethod === 'put' || requestMethod === 'post';
-
-  return (
-    <div>
-      <InputWrappers>
-        <select
-          value={requestMethod}
-          onChange={(event) => setRequestMethod(event.target.value as Method)}
-        >
-          {generateSelectOptions(apiMethods)}
-        </select>
-      </InputWrappers>
-
-      <InputWrappers>
-        <input
-          type="text"
-          value={requestURL}
-          onChange={(event) => setRequestURL(event.target.value)}
-        />
-      </InputWrappers>
-
-      <InputWrappers>
-        {displayBody && (
-          <div>
-            <select
+  const renderBody = () => {
+    if (isMethodWithBody(requestMethod)) {
+      return (
+        <div>
+          <LabelContentWrapper>
+            <Label>Body Type</Label>
+            <Select
+              fullWidth
               value={requestBodyType}
               onChange={(event) =>
                 setRequestBodyType(event.target.value as Method)
               }
             >
               {generateSelectOptions(Object.keys(contentTypeMap))}
-            </select>
-            <textarea
+            </Select>
+          </LabelContentWrapper>
+          <LabelContentWrapper>
+            <Label>Body</Label>
+            <TextArea
+              fullWidth
               rows={4}
               value={requestBody}
               onChange={(event) => setRequestBody(event.target.value)}
             />
-          </div>
-        )}
-      </InputWrappers>
+          </LabelContentWrapper>
+        </div>
+      );
+    }
+  };
 
-      <InputWrappers>
-        <button onClick={sendAPI}>Send API</button>
-      </InputWrappers>
+  return (
+    <>
+      <Card>
+        <Title>Custom API</Title>
+        <SectionWrapper>
+          <LabelContentWrapper>
+            <Label>URL</Label>
+            <Input
+              fullWidth
+              type="text"
+              value={requestURL}
+              onChange={(event) => setRequestURL(event.target.value)}
+            />
+          </LabelContentWrapper>
 
-      {renderResponseSection()}
-    </div>
+          <LabelContentWrapper>
+            <Label>Method</Label>
+            <Select
+              fullWidth
+              value={requestMethod}
+              onChange={(event) =>
+                setRequestMethod(event.target.value as Method)
+              }
+            >
+              {generateSelectOptions(apiMethods)}
+            </Select>
+          </LabelContentWrapper>
+
+          {renderBody()}
+
+          <InputWrappers>
+            <Button onClick={handleSendAPI}>Send Request</Button>
+          </InputWrappers>
+        </SectionWrapper>
+
+        <SectionWrapper>
+          <Response
+            isLoading={isLoading}
+            response={response}
+            message={message}
+            axiosResponse={axiosResponse}
+            axiosError={axiosError}
+          />
+        </SectionWrapper>
+      </Card>
+    </>
   );
 }
 

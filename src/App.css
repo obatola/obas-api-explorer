@@ -1,2 +1,7 @@
 .App {
 }
+
+body {
+  font-size: 14px;
+  background-color: #faf8fd;
+}
