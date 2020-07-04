@@ -9,15 +9,12 @@ import {
 import { APIConfigType } from '../../APIConfig';
 import BodyParam from './BodyParam';
 import { Button } from '../../shared/styles/Input.style';
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 import { isMethodWithBody } from '../../shared/utils';
 import { contentTypeMap } from '../restConsole/constants';
 import Response from './Response';
 import { Card } from '../../shared/styles/Card.style';
-
-interface RequestBodyType {
-  [key: string]: any;
-}
+import useRestAPISystem from '../../shared/hooks/UseRestAPISystem';
 
 function ExplorerComponent({
   title,
@@ -25,50 +22,26 @@ function ExplorerComponent({
   method,
   body,
 }: APIConfigType): ReactElement {
-  const [requestBody, setRequestBody] = useState<RequestBodyType>({});
-  const [axiosResponse, setAxiosResponse] = useState<AxiosResponse | null>();
-  const [responseJSON, setResponseJSON] = useState<object | null>();
-  const [axiosError, setAxiosError] = useState<object | null>();
-  const [responseString, setResponseString] = useState<string | null>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {
+    isLoading,
+    responseJSON,
+    responseString,
+    axiosResponse,
+    axiosError,
+    sendAPI,
+  } = useRestAPISystem();
+  const [requestBody, setRequestBody] = useState({});
 
-  const resetResponse = () => {
-    setResponseJSON(null);
-    setAxiosResponse(null);
-    setAxiosError(null);
-    setResponseString(null);
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    sendAPI(generateRequestConfig());
   };
 
-  const handleResponse = (value: any) => {
-    if (typeof value === 'object') {
-      try {
-        JSON.parse(JSON.stringify(value));
-        setResponseJSON(value);
-      } catch (e) {
-        setResponseString(value.toString());
-      }
-    } else {
-      setResponseString(value);
-    }
-  };
-
-  const handleSuccessfulAPIRequest = (response: AxiosResponse<any>) => {
-    setIsLoading(false);
-
-    handleResponse(response.data);
-    setAxiosResponse(response);
-  };
-
-  const handleFailedAPIRequest = (error: AxiosError<any>) => {
-    setIsLoading(false);
-    setAxiosResponse(error.response);
-    setAxiosError(error.toJSON());
-  };
-
-  const sendAPI = (requestConfig: AxiosRequestConfig) => {
-    axios(requestConfig)
-      .then(handleSuccessfulAPIRequest)
-      .catch(handleFailedAPIRequest);
+  const handleBodyParamChange = (key: string, value: string | number) => {
+    setRequestBody({
+      ...requestBody,
+      [key]: value,
+    });
   };
 
   const generateRequestConfig = (): AxiosRequestConfig => {
@@ -86,22 +59,6 @@ function ExplorerComponent({
       method,
       url,
     };
-  };
-
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-
-    setIsLoading(true);
-    resetResponse();
-
-    sendAPI(generateRequestConfig());
-  };
-
-  const handleBodyParamChange = (key: string, value: string | number) => {
-    setRequestBody({
-      ...requestBody,
-      [key]: value,
-    });
   };
 
   const renderBodySection = () => {
