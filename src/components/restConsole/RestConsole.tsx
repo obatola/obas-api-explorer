@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ChangeEvent, ReactElement, useState } from 'react';
 import axios, {
   AxiosError,
   AxiosRequestConfig,
@@ -30,8 +30,8 @@ const InputWrappers = styled.div`
 
 function RestConsole(): ReactElement {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [response, setResponse] = useState<object | null>();
-  const [message, setMessage] = useState<string | null>();
+  const [responseJSON, setResponseJSON] = useState<object | null>();
+  const [responseString, setResponseString] = useState<string | null>();
   const [requestMethod, setRequestMethod] = useState<Method>('get');
   const [requestBody, setRequestBody] = useState<string | undefined>();
   const [requestBodyType, setRequestBodyType] = useState<string>('text');
@@ -42,22 +42,22 @@ function RestConsole(): ReactElement {
   );
 
   const resetResponse = () => {
-    setResponse(null);
+    setResponseJSON(null);
     setAxiosResponse(null);
     setAxiosError(null);
-    setMessage(null);
+    setResponseString(null);
   };
 
   const handleResponse = (value: any) => {
     if (typeof value === 'object') {
       try {
         JSON.parse(JSON.stringify(value));
-        setResponse(value);
+        setResponseJSON(value);
       } catch (e) {
-        setMessage(value.toString());
+        setResponseString(value.toString());
       }
     } else {
-      setMessage(value);
+      setResponseString(value + '');
     }
   };
 
@@ -70,6 +70,7 @@ function RestConsole(): ReactElement {
 
   const handleFailedAPIRequest = (error: AxiosError<any>) => {
     setIsLoading(false);
+    setAxiosResponse(error.response);
     setAxiosError(error.toJSON());
   };
 
@@ -102,6 +103,12 @@ function RestConsole(): ReactElement {
     };
   };
 
+  const handleBodyTypeChange = (event: ChangeEvent<HTMLSelectElement>) =>
+    setRequestBodyType(event.target.value as string);
+
+  const handleRequestBodyChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
+    setRequestBody(event.target.value);
+
   const renderBody = () => {
     if (isMethodWithBody(requestMethod)) {
       return (
@@ -111,9 +118,7 @@ function RestConsole(): ReactElement {
             <Select
               fullWidth
               value={requestBodyType}
-              onChange={(event) =>
-                setRequestBodyType(event.target.value as Method)
-              }
+              onChange={handleBodyTypeChange}
             >
               {generateSelectOptions(Object.keys(contentTypeMap))}
             </Select>
@@ -124,13 +129,19 @@ function RestConsole(): ReactElement {
               fullWidth
               rows={4}
               value={requestBody}
-              onChange={(event) => setRequestBody(event.target.value)}
+              onChange={handleRequestBodyChange}
             />
           </LabelContentWrapper>
         </div>
       );
     }
   };
+
+  const handleURLChange = (event: ChangeEvent<HTMLInputElement>) =>
+    setRequestURL(event.target.value);
+
+  const handleMethodChange = (event: ChangeEvent<HTMLSelectElement>) =>
+    setRequestMethod(event.target.value as Method);
 
   return (
     <>
@@ -143,7 +154,7 @@ function RestConsole(): ReactElement {
               fullWidth
               type="text"
               value={requestURL}
-              onChange={(event) => setRequestURL(event.target.value)}
+              onChange={handleURLChange}
             />
           </LabelContentWrapper>
 
@@ -152,9 +163,7 @@ function RestConsole(): ReactElement {
             <Select
               fullWidth
               value={requestMethod}
-              onChange={(event) =>
-                setRequestMethod(event.target.value as Method)
-              }
+              onChange={handleMethodChange}
             >
               {generateSelectOptions(apiMethods)}
             </Select>
@@ -170,8 +179,8 @@ function RestConsole(): ReactElement {
         <SectionWrapper>
           <Response
             isLoading={isLoading}
-            response={response}
-            message={message}
+            responseJSON={responseJSON}
+            responseString={responseString}
             axiosResponse={axiosResponse}
             axiosError={axiosError}
           />

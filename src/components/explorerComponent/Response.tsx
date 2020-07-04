@@ -12,24 +12,30 @@ import { AxiosResponse } from 'axios';
 
 interface ResponseProps {
   isLoading: boolean;
-  response?: object | null;
-  message?: string | null;
+  responseJSON?: object | null;
+  responseString?: string | null;
   axiosResponse?: AxiosResponse | null;
   axiosError?: object | null;
 }
 
 function Response({
   isLoading,
-  response,
-  message,
-  axiosResponse,
-  axiosError,
+  responseJSON, // if response is a JSON
+  responseString, // if response is a string
+  axiosResponse, // response from Axios
+  axiosError, // error from Axios
 }: ResponseProps): ReactElement {
   const [viewRawResponse, setViewRawResponse] = useState(false);
 
   const toggleViewRawResponse = () => setViewRawResponse(!viewRawResponse);
 
-  if (!isLoading && !message && !response && !axiosResponse && !axiosError)
+  if (
+    !isLoading &&
+    !responseString &&
+    !responseJSON &&
+    !axiosResponse &&
+    !axiosError
+  )
     return <Fragment />;
 
   if (isLoading) {
@@ -75,6 +81,19 @@ function Response({
     );
   };
 
+  const renderResponseString = () => {
+    if (!responseString) {
+      return <Fragment />;
+    }
+
+    return (
+      <LabelContentWrapper>
+        <Label>Response Text</Label>
+        <TextArea rows={4} value={responseString} disabled />
+      </LabelContentWrapper>
+    );
+  };
+
   const renderStatus = () => {
     if (axiosResponse && axiosResponse.status) {
       return (
@@ -94,16 +113,16 @@ function Response({
     <>
       <SectionHeader>
         Response{' '}
-        <Button ghost compact onClick={toggleViewRawResponse}>
-          {buttonText}
-        </Button>
+        <ConditionalRender displayChildren={!!responseJSON || !!axiosError}>
+          <Button ghost compact onClick={toggleViewRawResponse}>
+            {buttonText}
+          </Button>
+        </ConditionalRender>
       </SectionHeader>
       {renderStatus()}
-      {renderResponseObject(response)}
+      {renderResponseObject(responseJSON)}
       {renderResponseObject(axiosError, { isError: true })}
-      <ConditionalRender displayChildren={!!message}>
-        {message}
-      </ConditionalRender>
+      {renderResponseString()}
     </>
   );
 }

@@ -27,28 +27,28 @@ function ExplorerComponent({
 }: APIConfigType): ReactElement {
   const [requestBody, setRequestBody] = useState<RequestBodyType>({});
   const [axiosResponse, setAxiosResponse] = useState<AxiosResponse | null>();
-  const [response, setResponse] = useState<object | null>();
+  const [responseJSON, setResponseJSON] = useState<object | null>();
   const [axiosError, setAxiosError] = useState<object | null>();
-  const [message, setMessage] = useState<string | null>();
+  const [responseString, setResponseString] = useState<string | null>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const resetResponse = () => {
-    setResponse(null);
+    setResponseJSON(null);
     setAxiosResponse(null);
     setAxiosError(null);
-    setMessage(null);
+    setResponseString(null);
   };
 
   const handleResponse = (value: any) => {
     if (typeof value === 'object') {
       try {
         JSON.parse(JSON.stringify(value));
-        setResponse(value);
+        setResponseJSON(value);
       } catch (e) {
-        setMessage(value.toString());
+        setResponseString(value.toString());
       }
     } else {
-      setMessage(value);
+      setResponseString(value);
     }
   };
 
@@ -61,6 +61,7 @@ function ExplorerComponent({
 
   const handleFailedAPIRequest = (error: AxiosError<any>) => {
     setIsLoading(false);
+    setAxiosResponse(error.response);
     setAxiosError(error.toJSON());
   };
 
@@ -127,7 +128,7 @@ function ExplorerComponent({
           <div>{url}</div>
         </LabelContentWrapper>
         <LabelContentWrapper>
-          <Label>Method:</Label>
+          <Label>Method</Label>
           <div>{method}</div>
         </LabelContentWrapper>
       </SectionWrapper>
@@ -140,8 +141,8 @@ function ExplorerComponent({
       <SectionWrapper>
         <Response
           isLoading={isLoading}
-          response={response}
-          message={message}
+          responseJSON={responseJSON}
+          responseString={responseString}
           axiosResponse={axiosResponse}
           axiosError={axiosError}
         />
