@@ -1,6 +1,5 @@
 import React, { FormEvent, ReactElement, useState, Fragment } from 'react';
 import {
-  ExplorerComponentWrapper,
   Label,
   LabelContentWrapper,
   SectionHeader,
@@ -14,6 +13,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { isMethodWithBody } from '../../shared/utils';
 import { contentTypeMap } from '../restConsole/constants';
 import Response from './Response';
+import { Card } from '../../shared/styles/Card.style';
 
 interface RequestBodyType {
   [key: string]: any;
@@ -119,7 +119,7 @@ function ExplorerComponent({
   };
 
   return (
-    <ExplorerComponentWrapper>
+    <Card>
       <Title>{title}</Title>
       <SectionWrapper>
         <LabelContentWrapper>
@@ -146,7 +146,7 @@ function ExplorerComponent({
           axiosError={axiosError}
         />
       </SectionWrapper>
-    </ExplorerComponentWrapper>
+    </Card>
   );
 }
 

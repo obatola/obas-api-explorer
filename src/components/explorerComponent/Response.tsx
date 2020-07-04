@@ -6,7 +6,7 @@ import {
   SectionHeader,
 } from './ExplorerComponent.style';
 import ReactJson from 'react-json-view';
-import { TextArea } from '../../shared/styles/Input.style';
+import { Button, TextArea } from '../../shared/styles/Input.style';
 import ConditionalRender from '../conditionalRender/ConditionalRender';
 import { AxiosResponse } from 'axios';
 
@@ -93,7 +93,10 @@ function Response({
   return (
     <>
       <SectionHeader>
-        Response <button onClick={toggleViewRawResponse}>{buttonText}</button>
+        Response{' '}
+        <Button ghost compact onClick={toggleViewRawResponse}>
+          {buttonText}
+        </Button>
       </SectionHeader>
       {renderStatus()}
       {renderResponseObject(response)}

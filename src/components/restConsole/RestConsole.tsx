@@ -9,7 +9,6 @@ import styled from 'styled-components';
 
 import { generateSelectOptions, isMethodWithBody } from '../../shared/utils';
 import { apiMethods, contentTypeMap } from './constants';
-import { RestConsoleWrapper } from './RestConsole.style';
 import {
   Button,
   Input,
@@ -23,6 +22,7 @@ import {
   SectionWrapper,
   Title,
 } from '../explorerComponent/ExplorerComponent.style';
+import { Card } from '../../shared/styles/Card.style';
 
 const InputWrappers = styled.div`
   margin-bottom: 20px;
@@ -102,14 +102,51 @@ function RestConsole(): ReactElement {
     };
   };
 
-  const displayBody: boolean =
-    requestMethod === 'put' || requestMethod === 'post';
+  const renderBody = () => {
+    if (isMethodWithBody(requestMethod)) {
+      return (
+        <div>
+          <LabelContentWrapper>
+            <Label>Body Type</Label>
+            <Select
+              fullWidth
+              value={requestBodyType}
+              onChange={(event) =>
+                setRequestBodyType(event.target.value as Method)
+              }
+            >
+              {generateSelectOptions(Object.keys(contentTypeMap))}
+            </Select>
+          </LabelContentWrapper>
+          <LabelContentWrapper>
+            <Label>Body</Label>
+            <TextArea
+              fullWidth
+              rows={4}
+              value={requestBody}
+              onChange={(event) => setRequestBody(event.target.value)}
+            />
+          </LabelContentWrapper>
+        </div>
+      );
+    }
+  };
 
   return (
     <>
-      <RestConsoleWrapper>
+      <Card>
         <Title>Custom API</Title>
         <SectionWrapper>
+          <LabelContentWrapper>
+            <Label>URL</Label>
+            <Input
+              fullWidth
+              type="text"
+              value={requestURL}
+              onChange={(event) => setRequestURL(event.target.value)}
+            />
+          </LabelContentWrapper>
+
           <LabelContentWrapper>
             <Label>Method</Label>
             <Select
@@ -123,41 +160,7 @@ function RestConsole(): ReactElement {
             </Select>
           </LabelContentWrapper>
 
-          <LabelContentWrapper>
-            <Label>URL</Label>
-            <Input
-              fullWidth
-              type="text"
-              value={requestURL}
-              onChange={(event) => setRequestURL(event.target.value)}
-            />
-          </LabelContentWrapper>
-
-          {displayBody && (
-            <div>
-              <LabelContentWrapper>
-                <Label>Body Type</Label>
-                <Select
-                  fullWidth
-                  value={requestBodyType}
-                  onChange={(event) =>
-                    setRequestBodyType(event.target.value as Method)
-                  }
-                >
-                  {generateSelectOptions(Object.keys(contentTypeMap))}
-                </Select>
-              </LabelContentWrapper>
-              <LabelContentWrapper>
-                <Label>Body</Label>
-                <TextArea
-                  fullWidth
-                  rows={4}
-                  value={requestBody}
-                  onChange={(event) => setRequestBody(event.target.value)}
-                />
-              </LabelContentWrapper>
-            </div>
-          )}
+          {renderBody()}
 
           <InputWrappers>
             <Button onClick={handleSendAPI}>Send Request</Button>
@@ -173,7 +176,7 @@ function RestConsole(): ReactElement {
             axiosError={axiosError}
           />
         </SectionWrapper>
-      </RestConsoleWrapper>
+      </Card>
     </>
   );
 }

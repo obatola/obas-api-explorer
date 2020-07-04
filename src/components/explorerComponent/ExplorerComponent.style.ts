@@ -13,11 +13,6 @@ export const ExplorerWrapper = styled.div`
   }
 `;
 
-export const ExplorerComponentWrapper = styled.div`
-  background-color: #ecf0f1;
-  padding: ${timesBasePx(2)};
-`;
-
 export const Title = styled.div`
   font-size: ${timesBasePx(2)};
   margin-bottom: ${timesBasePx(2)};
@@ -65,5 +60,5 @@ export const ReactJsoWrapper = styled.div<IsErrorProp>`
 
 export const Divider = styled.div`
   width: 100%;
-  border-bottom: 1px solid ${colorConstant.colors.lightGrey};
+  border-bottom: 1px solid ${colorConstant.colors.nuetral1};
 `;
