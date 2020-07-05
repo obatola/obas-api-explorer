@@ -2,7 +2,6 @@ import React, { ChangeEvent } from 'react';
 import { BodySpec } from '../../APIConfig';
 import { Label, LabelContentWrapper } from './ExplorerComponent.style';
 import { Input } from '../../shared/styles/Input.style';
-import { capitalizeString } from '../../shared/utils';
 
 interface BodyParamProps extends BodySpec {
   onChange: (key: string, value: string | number) => void;
@@ -48,7 +47,7 @@ function BodyParam({
 
   return (
     <LabelContentWrapper>
-      <Label>{capitalizeString(name)}</Label>
+      <Label>{name}</Label>
       <Input fullWidth onChange={handleChange} {...inputProps} />
     </LabelContentWrapper>
   );
