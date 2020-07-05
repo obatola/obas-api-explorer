@@ -1,5 +1,9 @@
 # Interactive API Explorer
 
+### Vanilla?!
+    - removes the rest console
+    - set's config to only have the api from the spec
+
 ### What is it?
  This tool is an interactive, browser-based tool for exploring endpoints. This tool accepts parameters describing endpoints (values such as url, method, headers, body etc) and produce a html component for sending requests to that endpoint.
  
