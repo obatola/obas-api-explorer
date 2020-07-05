@@ -1,11 +1,33 @@
 import React from 'react';
-import Explorers from './components/explorerComponent/Explorers';
-import { apiConfigs, globalConfig } from './APIConfig';
+import { apiConfig, globalConfig } from './APIConfig';
+import {
+  Divider,
+  ExplorerWrapper,
+} from './components/explorerComponent/ExplorerComponent.style';
+import ExplorerComponent from './components/explorerComponent/ExplorerComponent';
+import RestConsole from './components/restConsole/RestConsole';
 
 function App() {
+  const renderRestConsole = () => {
+    if (globalConfig.viewRestConsole) {
+      return <RestConsole />;
+    }
+  };
+
   return (
     <div className="App">
-      <Explorers globalConfig={globalConfig} config={apiConfigs} />
+      <ExplorerWrapper>
+        <ExplorerWrapper>
+          <ExplorerComponent
+            title={apiConfig.title}
+            url={apiConfig.url}
+            body={apiConfig.body}
+            method={apiConfig.method}
+          />
+          <Divider />
+          {renderRestConsole()}
+        </ExplorerWrapper>
+      </ExplorerWrapper>
     </div>
   );
 }

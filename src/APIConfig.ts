@@ -40,29 +40,27 @@ export interface APIConfigType {
   body?: BodySpec[];
 }
 
-export const apiConfigs: APIConfigType[] = [
-  {
-    title: 'Add new user',
-    url: 'https://jsonplaceholder.typicode.com/users',
-    method: 'POST',
-    body: [
-      {
-        name: 'email',
-        type: 'email',
-        maxlength: 24,
-        minlength: 3,
-      },
-      {
-        name: 'full-name',
-        type: 'text',
-        placeholder: 'John Doe',
-        required: true,
-      },
-      {
-        name: 'phone',
-        type: 'tel',
-        pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
-      },
-    ],
-  },
-];
+export const apiConfig: APIConfigType = {
+  title: 'Add new user',
+  url: 'https://jsonplaceholder.typicode.com/users',
+  method: 'POST',
+  body: [
+    {
+      name: 'email',
+      type: 'email',
+      maxlength: 24,
+      minlength: 3,
+    },
+    {
+      name: 'full-name',
+      type: 'text',
+      placeholder: 'John Doe',
+      required: true,
+    },
+    {
+      name: 'phone',
+      type: 'tel',
+      pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+    },
+  ],
+};
