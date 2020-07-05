@@ -98,18 +98,6 @@ export const apiConfigs: APIConfigType[] = [
     method: 'GET',
   },
   {
-    title: 'Patch a post',
-    url: 'https://jsonplaceholder.typicode.com/posts/1',
-    method: 'PATCH',
-    body: [
-      {
-        name: 'title',
-        type: 'text',
-        required: true,
-      },
-    ],
-  },
-  {
     title: 'Delete a post',
     url: 'https://jsonplaceholder.typicode.com/posts/1',
     method: 'DELETE',
