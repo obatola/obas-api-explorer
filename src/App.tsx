@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import Explorers from './components/explorerComponent/Explorers';
 import { apiConfigs } from './APIConfig';
 
