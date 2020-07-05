@@ -30,7 +30,7 @@ export interface GlobalConfigType {
 }
 
 export const globalConfig: GlobalConfigType = {
-  viewRestConsole: true,
+  viewRestConsole: false,
 };
 
 export interface APIConfigType {
@@ -62,52 +62,7 @@ export const apiConfigs: APIConfigType[] = [
         name: 'phone',
         type: 'tel',
         pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
-        placeholder: '555-555-5555',
       },
     ],
-  },
-  {
-    title: 'Update a post',
-    url: 'https://jsonplaceholder.typicode.com/posts/1',
-    method: 'PUT',
-    body: [
-      {
-        name: 'title',
-        type: 'text',
-        required: true,
-      },
-      {
-        name: 'body',
-        type: 'text',
-      },
-      {
-        name: 'website',
-        type: 'url',
-      },
-      {
-        name: 'creation data',
-        type: 'date',
-      },
-      {
-        name: 'primary color',
-        type: 'color',
-      },
-      {
-        name: 'rating',
-        type: 'range',
-        rangeMin: 0,
-        rangeMax: 10,
-      },
-    ],
-  },
-  {
-    title: 'Get a post',
-    url: 'https://jsonplaceholder.typicode.com/posts/1',
-    method: 'GET',
-  },
-  {
-    title: 'Delete a post',
-    url: 'https://jsonplaceholder.typicode.com/posts/1',
-    method: 'DELETE',
   },
 ];
