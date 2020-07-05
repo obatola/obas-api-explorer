@@ -25,6 +25,14 @@ export interface BodySpec {
   pattern?: string;
 }
 
+export interface GlobalConfigType {
+  viewRestConsole?: boolean;
+}
+
+export const globalConfig: GlobalConfigType = {
+  viewRestConsole: true,
+};
+
 export interface APIConfigType {
   title: string;
   url: string;

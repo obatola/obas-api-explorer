@@ -1,11 +1,11 @@
 import React from 'react';
 import Explorers from './components/explorerComponent/Explorers';
-import { apiConfigs } from './APIConfig';
+import { apiConfigs, globalConfig } from './APIConfig';
 
 function App() {
   return (
     <div className="App">
-      <Explorers config={apiConfigs} />
+      <Explorers globalConfig={globalConfig} config={apiConfigs} />
     </div>
   );
 }

@@ -4,7 +4,7 @@
  This tool is an interactive, browser-based tool for exploring endpoints. This tool accepts parameters describing endpoints (values such as url, method, headers, body etc) and produce a html component for sending requests to that endpoint.
  
  You can utilize the tool in two ways.
- 1. You can edit the `apiConfigs` variable in the `src/APIConfig.ts` file. The variable requires that you provide an array of endpoint configurations that follow the schema below. If you wish to only display one API you can provide an array with one api config. There is also a custom RestConsole that rests at the bottom of provided APIs so that a user can test out custom api's on their own if they see fit.
+ 1. You can edit the `apiConfigs` variable in the `src/APIConfig.ts` file. The variable requires that you provide an array of endpoint configurations that follow the schema below. If you wish to only display one API you can provide an array with one api config. There is also a custom RestConsole that rests at the bottom of provided APIs so that a user can test out custom api's on their own if they see fit. The rest console can be toggled on or off by setting `viewRestConsole` to `true` or `false` in the `globalConfig` variable also found in the file, `src/APIConfig.ts`
     ```
     [
         {
