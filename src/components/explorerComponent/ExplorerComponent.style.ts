@@ -19,21 +19,23 @@ export const Title = styled.div`
 `;
 
 export const SectionWrapper = styled.div`
-  margin-bottom: ${timesBasePx(1.5)};
+  margin-bottom: ${timesBasePx(2)};
 `;
 
 export const SectionHeader = styled.div`
   font-size: ${timesBasePx(1.5)};
-  margin-bottom: ${timesBasePx(1.2)};
+  color: ${colorConstant.colors.darkGrey};
+  margin-bottom: ${timesBasePx(2)};
 `;
 
 export const Label = styled.div`
-  font-size: ${timesBasePx(1.2)};
+  font-size: ${timesBasePx(1)};
+  color: ${colorConstant.colors.darkGrey};
   margin-bottom: ${timesBasePx(0.5)};
 `;
 
 export const LabelContentWrapper = styled.div`
-  margin-bottom: ${timesBasePx(1)};
+  margin-bottom: ${timesBasePx(1.5)};
 `;
 
 export interface IsErrorProp {

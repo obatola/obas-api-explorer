@@ -7,7 +7,6 @@ import {
 } from './ExplorerComponent.style';
 import ReactJson from 'react-json-view';
 import { Button, TextArea } from '../../shared/styles/Input.style';
-import ConditionalRender from '../conditionalRender/ConditionalRender';
 import { AxiosResponse } from 'axios';
 
 interface ResponseProps {
@@ -105,20 +104,23 @@ function Response({
     }
   };
 
-  const buttonText = viewRawResponse
-    ? 'view formatted response'
-    : 'view raw response';
+  const renderButton = () => {
+    if (!!responseJSON || !!axiosError) {
+      const buttonText = viewRawResponse
+        ? 'view formatted response'
+        : 'view raw response';
+
+      return (
+        <Button ghost compact onClick={toggleViewRawResponse}>
+          {buttonText}
+        </Button>
+      );
+    }
+  };
 
   return (
     <>
-      <SectionHeader>
-        Response{' '}
-        <ConditionalRender displayChildren={!!responseJSON || !!axiosError}>
-          <Button ghost compact onClick={toggleViewRawResponse}>
-            {buttonText}
-          </Button>
-        </ConditionalRender>
-      </SectionHeader>
+      <SectionHeader>Response {renderButton()}</SectionHeader>
       {renderStatus()}
       {renderResponseObject(responseJSON)}
       {renderResponseObject(axiosError, { isError: true })}

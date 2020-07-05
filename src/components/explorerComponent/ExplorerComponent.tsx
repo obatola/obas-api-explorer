@@ -70,7 +70,7 @@ function ExplorerComponent({
 
     return (
       <>
-        <SectionHeader>Body</SectionHeader>
+        <SectionHeader>Body Parameters</SectionHeader>
         {bodyParamDivs}
       </>
     );
