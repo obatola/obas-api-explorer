@@ -27,7 +27,7 @@
     ]
     ```
     
-2. You can exclusively use the `ExplorerComponent` found in the following file `src/components/explorerComponent/ExplorerComponent.tsx`. This component is what displays a singular API Explorer. To use it you must provide the following props, `title`, `url`, `method`, `body`. The schema's for each are listed below.
+2. You can exclusively use the `ExplorerComponent` found in the following file `src/components/explorerComponent/ExplorerComponent.tsx`. This component is what displays a singular API Explorer. To use it you must provide the following props, `title`, `url`, `method`, `body`. The schemas for each are listed below.
     ```
     title: string;
 
